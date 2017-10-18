@@ -7,34 +7,62 @@ from easing import *
 scheduleUrl = 'https://datenspuren.de/2017/fahrplan/schedule.xml'
 
 def introFrames(args):
+    ## flimmern und in Teilen einfügen
+    frames = 12
+    for i in range(0, frames):
+        yield(
+           ('sprayG1', 'style', 'opacity', 0),
+           ('sprayG2', 'style', 'opacity', 0),
+           ('sprayG3', 'style', 'opacity', 0),
+           ('sprayG4', 'style', 'opacity', 0),
+           ('datenspurende', 'style', 'opacity', 0),
+           ('blossKeineDS', 'style', 'opacity', 0),
+           ('title', 'style', 'opacity', 0),
+           ('subtitle', 'style', 'opacity', 0),
+           ('persons', 'style', 'opacity', 0),
+           ('id', 'style', 'opacity', 0),
+        )
+    frames = 30
+    for i in range(0, frames):
+        yield(
+           ('sprayG2', 'style', 'opacity', "%.4f" % easeInOutBounce(i, 0.2, 0.9, frames)),
+        )
+    frames = 30
+    for i in range(0, frames):
+        yield(
+           ('sprayG2', 'style', 'opacity', 0),
+           ('sprayG4', 'style', 'opacity', "%.4f" % easeInOutBounce(i, 0.2, 0.9, frames)),
+        )
+    frames = 30
+    for i in range(0, frames):
+        yield(
+           ('sprayG4', 'style', 'opacity', 0),
+           ('sprayG1', 'style', 'opacity', "%.4f" % easeInOutBounce(i, 0.2, 0.9, frames)),
+        )
+    frames = 10
+    for i in range(0, frames):
+        yield(
+           ('sprayG2', 'style', 'opacity', "%.4f" % easeInOutBounce(i, 0.6, 1, frames)),
+           ('sprayG4', 'style', 'opacity', "%.4f" % easeInOutBounce(i, 0.6, 1, frames)),
+        )
+    frames = 10
+    for i in range(0, frames):
+        yield(
+           ('sprayG2', 'style', 'opacity', 1),
+           ('sprayG4', 'style', 'opacity', 1),
+           ('sprayG1', 'style', 'opacity', "%.4f" % easeInOutBounce(i, 0.6, 1, frames)),
+           ('sprayG3', 'style', 'opacity', "%.4f" % easeInOutBounce(i, 0.6, 1, frames)),
+        )
+    #show whole image for 2 seconds
     frames = 2*fps
     for i in range(0, frames):
         yield(
-           ('sprayLogo', 'attr', 'transform', 'translate(0,%.4f)' % easeOutQuad(i, 100, -100, frames) ),
-
-           # ('datenspurende', 'style', 'opacity', 1),
-           # ('sprayLogo', 'style', 'opacity', 1),
-           # ('title', 'style', 'opacity', 1),
-           # ('subtitle', 'style', 'opacity', 1),
-           # ('persons', 'style', 'opacity', 1),
-           # ('id', 'style', 'opacity', 1),
+           ('sprayG2', 'style', 'opacity', 1),
+           ('sprayG4', 'style', 'opacity', 1),
+           ('sprayG1', 'style', 'opacity', 1),
+           ('sprayG3', 'style', 'opacity', 1),
         )
-
-'''
-#fade in sprayLogo
-    frames = 1*fps
-    for i in range(0, frames):
-        yield (
-            ('blossKeineDS', 'style', 'opacity', 0),
-            ('datenspurende', 'style', 'opacity', 0),
-            ('sprayLogo', 'style', 'opacity', 0),
-            ('title', 'style', 'opacity', 0),
-            ('subtitle', 'style', 'opacity', 0),
-            ('persons', 'style', 'opacity', 0),
-            ('id', 'style', 'opacity', 0),
-        )
-
-#fade in title, subtitle, persons and id
+    #fade in title, subtitle, persons and id
     frames = 2*fps
     for i in range(0, frames):
         yield(
@@ -43,16 +71,6 @@ def introFrames(args):
             ('persons', 'style', 'opacity', easeInQuad(i, 0, 1, frames)),
             ('id', 'style', 'opacity', easeInQuad(i, 0, 1, frames)),
         )
-#show whole image for 2 seconds
-    frames = 2*fps
-    for i in range(0, frames):
-        yield(
-            ('title', 'style', 'opacity', 1),
-            ('subtitle', 'style', 'opacity', 1),
-            ('persons', 'style', 'opacity', 1),
-            ('id', 'style', 'opacity', 1),
-        )
-'''
 
 
 def backgroundFrames(parameters):
