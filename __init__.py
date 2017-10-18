@@ -7,6 +7,20 @@ from easing import *
 scheduleUrl = 'https://datenspuren.de/2017/fahrplan/schedule.xml'
 
 def introFrames(args):
+    frames = 2*fps
+    for i in range(0, frames):
+        yield(
+           ('sprayLogo', 'attr', 'transform', 'translate(0,%.4f)' % easeOutQuad(i, 100, -100, frames) ),
+
+           # ('datenspurende', 'style', 'opacity', 1),
+           # ('sprayLogo', 'style', 'opacity', 1),
+           # ('title', 'style', 'opacity', 1),
+           # ('subtitle', 'style', 'opacity', 1),
+           # ('persons', 'style', 'opacity', 1),
+           # ('id', 'style', 'opacity', 1),
+        )
+
+'''
 #fade in sprayLogo
     frames = 1*fps
     for i in range(0, frames):
@@ -38,6 +52,8 @@ def introFrames(args):
             ('persons', 'style', 'opacity', 1),
             ('id', 'style', 'opacity', 1),
         )
+'''
+
 
 def backgroundFrames(parameters):
     # 40 Sekunden
