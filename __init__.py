@@ -13,7 +13,7 @@ def introFrames(args):
         yield (
             ('blossKeineDS', 'style', 'opacity', 0),
             ('datenspurende', 'style', 'opacity', 0),
-            ('logo', 'style', 'opacity', 0),
+            ('sprayLogo', 'style', 'opacity', 0),
             ('title', 'style', 'opacity', 0),
             ('subtitle', 'style', 'opacity', 0),
             ('persons', 'style', 'opacity', 0),
@@ -47,7 +47,7 @@ def backgroundFrames(parameters):
             xshift = (i+1) * 300/frames
             yshift = ((i+1) * (150/frames))
             yield(
-                        ('logo', 'attr', 'transform', 'translate(%.4f, %.4f)' % (xshift, yshift)),
+                ('logo', 'attr', 'transform', 'translate(%.4f, %.4f)' % (xshift, yshift)),
             )
 
         frames = 20*fps
@@ -55,7 +55,7 @@ def backgroundFrames(parameters):
             xshift = 300 - ((i+1) * (300/frames))
             yshift = 150 - ((i+1) * (150/frames))
             yield(
-                        ('logo', 'attr', 'transform', 'translate(%.4f, %.4f)' % (xshift, yshift)),
+              ('logo', 'attr', 'transform', 'translate(%.4f, %.4f)' % (xshift, yshift)),
             )
 
 def outroFrames(args):
@@ -153,10 +153,11 @@ def debug():
             '$id': 7776,
             '$title': 'Titel des Talks',
             '$subtitle': 'Subtitel des talks',
-            '$persons':  'pers1, pers2, Frank Nord, Ho! Schi Ming'
+            '$personnames':  ['pers1','pers2','Frank Nord','Ho! Schi Ming']
         }
     )
 
+    '''
     render('outro.svg',
         '../outro.ts',
         outroFrames
@@ -172,12 +173,13 @@ def debug():
         '../pause.ts',
         pauseFrames
     )
+    '''
 
 
 def tasks(queue, args, idlist, skiplist):
     # iterate over all events extracted from the schedule xml-export
     for event in events(scheduleUrl):
-        if event['room'] not in ('Goldberg Saal'):  #if event['room'] not in ('Goldberg Saal', 'Museumskino', 'Technisches Theater','Add-ons'):
+        if event['room'] not in ('Goldberg Saal', 'Museumskino', 'Technisches Theater','Add-ons'):
             print("skipping room %s (%s [%s])" % (event['room'], event['title'], event['id']))
             continue
         if not (idlist==[]):
