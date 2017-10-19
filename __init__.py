@@ -1,16 +1,38 @@
 #!/usr/bin/python3
-
 from renderlib import *
 from easing import *
+import svg.path
+import random
+from itertools import permutations
 
 # URL to Schedule-XML
 scheduleUrl = 'https://datenspuren.de/2017/fahrplan/schedule.xml'
+colors = ['#9e00a0', '#ffe72d', '#ff8600', '#0bc401', '#d40010', '#0049da']
+
+def flashImage(frame, rate):
+    if(frame % rate == 0):
+        return 0
+
+def rndColors():
+  return colors[random.randint(0, 5)]
+
+def sprayG1():
+    framesContent = []
+    for i in range(1, 32):
+          framesContent += [('sprayG1_%s'%i,  'style', 'fill', rndColors() )]
+    return framesContent
+
+def sprayG1():
+    framesContent = []
+    for i in range(1, 32):
+          framesContent += [('sprayG1_%s'%i,  'style', 'fill', rndColors() )]
+    return framesContent
 
 def introFrames(args):
-    ## flimmern und in Teilen einfügen
+   ## flimmern und in Teilen einfügen
     frames = 12
     for i in range(0, frames):
-        yield(
+        scene = [
            ('sprayG1', 'style', 'opacity', 0),
            ('sprayG2', 'style', 'opacity', 0),
            ('sprayG3', 'style', 'opacity', 0),
@@ -21,7 +43,11 @@ def introFrames(args):
            ('subtitle', 'style', 'opacity', 0),
            ('persons', 'style', 'opacity', 0),
            ('id', 'style', 'opacity', 0),
-        )
+           ]
+        scene += sprayG1()
+        yield (scene)
+
+'''
     frames = 30
     for i in range(0, frames):
         yield(
@@ -37,13 +63,13 @@ def introFrames(args):
     for i in range(0, frames):
         yield(
            ('sprayG4', 'style', 'opacity', 0),
-           ('sprayG1', 'style', 'opacity', "%.4f" % easeInOutBounce(i, 0.2, 0.9, frames)),
+           ('sprayG1', 'style', 'opacity', "%.4f" % easeInOutBounce(i, 0.2, 0.1, frames)),
         )
     frames = 10
     for i in range(0, frames):
         yield(
+           ('sprayG1', 'style', 'opacity', "%.4f" % easeInOutBounce(i, 0.6, 1, frames)),
            ('sprayG2', 'style', 'opacity', "%.4f" % easeInOutBounce(i, 0.6, 1, frames)),
-           ('sprayG4', 'style', 'opacity', "%.4f" % easeInOutBounce(i, 0.6, 1, frames)),
         )
     frames = 10
     for i in range(0, frames):
@@ -53,17 +79,41 @@ def introFrames(args):
            ('sprayG1', 'style', 'opacity', "%.4f" % easeInOutBounce(i, 0.6, 1, frames)),
            ('sprayG3', 'style', 'opacity', "%.4f" % easeInOutBounce(i, 0.6, 1, frames)),
         )
-    #show whole image for 2 seconds
-    frames = 2*fps
+    #show whole image for 1 seconds
+    frames = 1*fps
     for i in range(0, frames):
         yield(
-           ('sprayG2', 'style', 'opacity', 1),
-           ('sprayG4', 'style', 'opacity', 1),
-           ('sprayG1', 'style', 'opacity', 1),
-           ('sprayG3', 'style', 'opacity', 1),
+                ('sprayG1', 'style', 'opacity', flashImage(i, 5)),
+                ('sprayG2', 'style', 'opacity', 1),
+                ('sprayG4', 'style', 'opacity', 1),
+                ('sprayG3', 'style', 'opacity', 1),
+        )
+
+    #and one more
+    frames = 1*fps
+    for i in range(0, frames):
+        yield(
+           ('sprayG1', 'style', 'opacity', "%.4f" % easeInOutBounce(i, 0.2, 0.9, frames)),
+           ('sprayG2', 'style', 'opacity', "%.4f" % easeInOutBounce(i, 0.2, 0.9, frames)),
+           ('sprayG3', 'style', 'opacity', flashImage(i, 5)),
+           ('sprayG4', 'style', 'opacity', "%.4f" % easeInOutBounce(i, 0.2, 0.9, frames)),
+        )
+
+    frames = 1*fps
+    for i in range(0, frames):
+        yield(
+            ('sprayG2', 'style', 'opacity', 1),
+            ('sprayG4', 'style', 'opacity', 1),
+            ('sprayG1', 'style', 'opacity', 1),
+            ('sprayG3', 'style', 'opacity', 1),
+        )
+
+    for i in range(0, 10):
+        yield(
+            ('sprayG3', 'style', 'opacity', flashImage(i, 7)),
         )
     #fade in title, subtitle, persons and id
-    frames = 2*fps
+    frames = 3*fps
     for i in range(0, frames):
         yield(
             ('title', 'style', 'opacity', easeInQuad(i, 0, 1, frames)),
@@ -71,6 +121,7 @@ def introFrames(args):
             ('persons', 'style', 'opacity', easeInQuad(i, 0, 1, frames)),
             ('id', 'style', 'opacity', easeInQuad(i, 0, 1, frames)),
         )
+'''
 
 
 def backgroundFrames(parameters):
