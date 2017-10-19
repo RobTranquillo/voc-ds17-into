@@ -16,23 +16,20 @@ def flashImage(frame, rate):
 def rndColors():
   return colors[random.randint(0, 5)]
 
-def sprayG1():
+def colorSprayG(g,color):
     framesContent = []
-    for i in range(1, 32):
-          framesContent += [('sprayG1_%s'%i,  'style', 'fill', rndColors() )]
-    return framesContent
-
-def sprayG1():
-    framesContent = []
-    for i in range(1, 32):
-          framesContent += [('sprayG1_%s'%i,  'style', 'fill', rndColors() )]
+    for i in range(1, 48):
+          if color is 'rnd':
+            framesContent += [('sprayG%s_%s'%(g,i),  'style', 'fill', rndColors() )]
+          else:
+            framesContent += [('sprayG%s_%s'%(g,i),  'style', 'fill', color )]
     return framesContent
 
 def introFrames(args):
    ## flimmern und in Teilen einfügen
     frames = 12
     for i in range(0, frames):
-        scene = [
+        yield (
            ('sprayG1', 'style', 'opacity', 0),
            ('sprayG2', 'style', 'opacity', 0),
            ('sprayG3', 'style', 'opacity', 0),
@@ -43,42 +40,56 @@ def introFrames(args):
            ('subtitle', 'style', 'opacity', 0),
            ('persons', 'style', 'opacity', 0),
            ('id', 'style', 'opacity', 0),
-           ]
-        scene += sprayG1()
-        yield (scene)
-
-'''
-    frames = 30
-    for i in range(0, frames):
-        yield(
-           ('sprayG2', 'style', 'opacity', "%.4f" % easeInOutBounce(i, 0.2, 0.9, frames)),
         )
+
     frames = 30
     for i in range(0, frames):
-        yield(
+        scene = [('sprayG2', 'style', 'opacity', "%.4f" % easeInOutBounce(i, 0.1, 1, frames))]
+        scene += colorSprayG(2,"rnd")
+        #print(scene)
+        yield(scene)
+
+    frames = 30
+    for i in range(0, frames):
+        scene = [
            ('sprayG2', 'style', 'opacity', 0),
            ('sprayG4', 'style', 'opacity', "%.4f" % easeInOutBounce(i, 0.2, 0.9, frames)),
-        )
+        ]
+        scene += colorSprayG(4,"rnd")
+        yield(scene)
+
     frames = 30
     for i in range(0, frames):
-        yield(
+        scene = [
            ('sprayG4', 'style', 'opacity', 0),
            ('sprayG1', 'style', 'opacity', "%.4f" % easeInOutBounce(i, 0.2, 0.1, frames)),
-        )
+        ]
+        scene += colorSprayG(1,"rnd")
+        yield(scene)
+
     frames = 10
     for i in range(0, frames):
-        yield(
+        scene = [
            ('sprayG1', 'style', 'opacity', "%.4f" % easeInOutBounce(i, 0.6, 1, frames)),
            ('sprayG2', 'style', 'opacity', "%.4f" % easeInOutBounce(i, 0.6, 1, frames)),
-        )
+        ]
+        scene += colorSprayG(2,"rnd")
+        yield(scene)
+
     frames = 10
     for i in range(0, frames):
-        yield(
-           ('sprayG2', 'style', 'opacity', 1),
-           ('sprayG4', 'style', 'opacity', 1),
+        scene = [
            ('sprayG1', 'style', 'opacity', "%.4f" % easeInOutBounce(i, 0.6, 1, frames)),
+           ('sprayG2', 'style', 'opacity', 1),
            ('sprayG3', 'style', 'opacity', "%.4f" % easeInOutBounce(i, 0.6, 1, frames)),
-        )
+           ('sprayG4', 'style', 'opacity', 1),
+        ]
+        scene += colorSprayG(1,"rnd")
+        scene += colorSprayG(2,"rnd")
+        scene += colorSprayG(3,"rnd")
+        scene += colorSprayG(4,"rnd")
+        yield(scene)
+
     #show whole image for 1 seconds
     frames = 1*fps
     for i in range(0, frames):
@@ -92,26 +103,33 @@ def introFrames(args):
     #and one more
     frames = 1*fps
     for i in range(0, frames):
-        yield(
+        scene = [
            ('sprayG1', 'style', 'opacity', "%.4f" % easeInOutBounce(i, 0.2, 0.9, frames)),
            ('sprayG2', 'style', 'opacity', "%.4f" % easeInOutBounce(i, 0.2, 0.9, frames)),
            ('sprayG3', 'style', 'opacity', flashImage(i, 5)),
            ('sprayG4', 'style', 'opacity', "%.4f" % easeInOutBounce(i, 0.2, 0.9, frames)),
-        )
+        ]
+        yield(scene, white)
 
     frames = 1*fps
     for i in range(0, frames):
-        yield(
+        scene = [
             ('sprayG2', 'style', 'opacity', 1),
             ('sprayG4', 'style', 'opacity', 1),
             ('sprayG1', 'style', 'opacity', 1),
             ('sprayG3', 'style', 'opacity', 1),
-        )
+        ]
+        scene += colorSprayG(1,"rnd")
+        scene += colorSprayG(2,"rnd")
+        scene += colorSprayG(3,"rnd")
+        scene += colorSprayG(4,"rnd")
+        yield( scene )
 
     for i in range(0, 10):
         yield(
             ('sprayG3', 'style', 'opacity', flashImage(i, 7)),
         )
+
     #fade in title, subtitle, persons and id
     frames = 3*fps
     for i in range(0, frames):
@@ -121,6 +139,14 @@ def introFrames(args):
             ('persons', 'style', 'opacity', easeInQuad(i, 0, 1, frames)),
             ('id', 'style', 'opacity', easeInQuad(i, 0, 1, frames)),
         )
+
+'''
+    frames = 30
+    for i in range(0, frames):
+        scene = [
+        ]
+        scene += colorSprayG(,"rnd")
+        yield(scene)
 '''
 
 
