@@ -8,6 +8,7 @@ from itertools import permutations
 # URL to Schedule-XML
 scheduleUrl = 'https://datenspuren.de/2017/fahrplan/schedule.xml'
 colors = ['#9e00a0', '#ffe72d', '#ff8600', '#0bc401', '#d40010', '#0049da']
+## the colors are stolen from the Easterhack17 intro, in honor of there color flicker preset
 
 def flashImage(frame, rate):
     if(frame % rate == 0):
@@ -17,16 +18,19 @@ def rndColors():
   return colors[random.randint(0, 5)]
 
 def colorSprayG(g,color):
+    objCnt = {1: 32, 2:48, 3:28, 4: 23} #group counts
     framesContent = []
-    for i in range(1, 48):
+    for i in range(1, objCnt[g]+1):
           if color is 'rnd':
             framesContent += [('sprayG%s_%s'%(g,i),  'style', 'fill', rndColors() )]
           else:
             framesContent += [('sprayG%s_%s'%(g,i),  'style', 'fill', color )]
     return framesContent
 
+
+
 def introFrames(args):
-   ## flimmern und in Teilen einfügen
+    ## flimmern und in Teilen einfügen
     frames = 12
     for i in range(0, frames):
         yield (
@@ -109,7 +113,7 @@ def introFrames(args):
            ('sprayG3', 'style', 'opacity', flashImage(i, 5)),
            ('sprayG4', 'style', 'opacity', "%.4f" % easeInOutBounce(i, 0.2, 0.9, frames)),
         ]
-        yield(scene, white)
+        yield( scene )
 
     frames = 1*fps
     for i in range(0, frames):
@@ -124,11 +128,6 @@ def introFrames(args):
         scene += colorSprayG(3,"rnd")
         scene += colorSprayG(4,"rnd")
         yield( scene )
-
-    for i in range(0, 10):
-        yield(
-            ('sprayG3', 'style', 'opacity', flashImage(i, 7)),
-        )
 
     #fade in title, subtitle, persons and id
     frames = 3*fps
@@ -152,7 +151,6 @@ def introFrames(args):
 
 def backgroundFrames(parameters):
     # 40 Sekunden
-
         frames = 20*fps
         for i in range(0, frames):
             xshift = (i+1) * 300/frames
@@ -170,93 +168,83 @@ def backgroundFrames(parameters):
             )
 
 def outroFrames(args):
-#fadein outro graphics
-    frames = 3*fps
-    for i in range(0, frames):
-        yield(
-            ('logo', 'style', 'opacity', easeInQuad(i, 0.01, 1, frames)),
-            ('logotext', 'style', 'opacity', easeInQuad(i, 0.01, 1, frames)),
-            ('c3voclogo', 'style', 'opacity', easeInQuad(i, 0.01, 1, frames)),
-            ('c3voctext', 'style', 'opacity', easeInQuad(i, 0.01, 1, frames)),
-            ('bysalogo', 'style', 'opacity', easeInQuad(i, 0.01, 1, frames)),
-            ('bysatext', 'style', 'opacity', easeInQuad(i, 0.01, 1, frames)),
-        )
-    frames = 3*fps
-    for i in range(0, frames):
-        yield(
-            ('pillgroup', 'style', 'opacity', 1),
-            ('logotext', 'style', 'opacity', 1),
-            ('c3voclogo', 'style', 'opacity', 1),
-            ('c3voctext', 'style', 'opacity', 1),
-            ('bysalogo', 'style', 'opacity', 1),
-            ('bysatext', 'style', 'opacity', 1),
-        )
+  ## Just the spray
+  frames = 3*fps
+  for i in range(0, frames):
+      scene = [
+        ('datenspurende', 'style', 'opacity', 0),
+        ('blossKeineDS', 'style', 'opacity', 0),
+        ('c3voclogo', 'style', 'opacity', 0),
+        ('c3voctext', 'style', 'opacity', 0),
+        ('bysalogo', 'style', 'opacity', 0),
+        ('bysatext', 'style', 'opacity', 0),
+        ('sprayG1', 'style', 'opacity', 1),
+        ('sprayG2', 'style', 'opacity', 1),
+        ('sprayG3', 'style', 'opacity', 1),
+        ('sprayG4', 'style', 'opacity', 1),
+      ]
+      scene += colorSprayG(1,"rnd")
+      scene += colorSprayG(2,"rnd")
+      scene += colorSprayG(3,"rnd")
+      scene += colorSprayG(4,"rnd")
+      yield(scene)
+
+  ## headlines + white Spray
+  frames = 1*fps
+  for i in range(0, frames):
+      scene = [
+          ('datenspurende', 'style', 'opacity', easeInExpo(i, 0.05, 1, frames)),
+          ('blossKeineDS',  'style', 'opacity', easeInExpo(i, 0.05, 1, frames)),
+      ]
+      scene += colorSprayG(1,"white")
+      scene += colorSprayG(2,"white")
+      scene += colorSprayG(3,"white")
+      scene += colorSprayG(4,"white")
+      yield(scene)
+
+  ## headlines + logo + fadein C3Voc
+  frames = 3*fps
+  for i in range(0, frames):
+      yield(
+          ('datenspurende', 'style', 'opacity', 1),
+          ('blossKeineDS', 'style', 'opacity', 1),
+          ('c3voclogo', 'style', 'opacity', easeInQuad(i, 0, 1, frames)),
+          ('c3voctext', 'style', 'opacity', easeInQuad(i, 0, 1, frames)),
+          ('bysalogo', 'style', 'opacity', easeInQuad(i, 0, 1, frames)),
+          ('bysatext', 'style', 'opacity', easeInQuad(i, 0, 1, frames)),
+      )
+
+  frames = 3*fps
+  for i in range(0, frames):
+      scene = [
+          ('datenspurende', 'style', 'opacity', 1),
+          ('blossKeineDS', 'style', 'opacity', 1),
+          ('c3voclogo', 'style', 'opacity', 1),
+          ('c3voctext', 'style', 'opacity', 1),
+          ('bysalogo', 'style', 'opacity', 1),
+          ('bysatext', 'style', 'opacity', 1),
+      ]
+      yield(scene)
+
+
 
 def pauseFrames(args):
-#fade heartgroups
-        frames = int(0.5*fps)
-        for i in range(0, frames):
-                yield (
-                        ('logo', 'style', 'opacity', easeInQuad(i, 0.25, 0.75, frames)),
-                        ('logo', 'style', 'opacity', easeInQuad(i, 0.25, 0.75, frames)),
-                        ('logo', 'style', 'opacity', easeInQuad(i, 0.25, 0.75, frames)),
-                )
-        for i in range(0, frames):
-                yield (
-                        ('logo', 'style', 'opacity', easeInQuad(i, 1, -0.75, frames)),
-                        ('logo', 'style', 'opacity', easeInQuad(i, 1, -0.75, frames)),
-                        ('logo', 'style', 'opacity', easeInQuad(i, 1, -0.75, frames)),
-                )
-        for i in range(0, frames):
-                yield (
-                        ('logo', 'style', 'opacity', easeInQuad(i, 0.25, 0.75, frames)),
-                        ('logo', 'style', 'opacity', easeInQuad(i, 0.25, 0.75, frames)),
-                        ('logo', 'style', 'opacity', easeInQuad(i, 0.25, 0.75, frames)),
-                )
-        for i in range(0, frames):
-                yield (
-                        ('logo', 'style', 'opacity', easeInQuad(i, 1, -0.75, frames)),
-                        ('logo', 'style', 'opacity', easeInQuad(i, 1, -0.75, frames)),
-                        ('logo', 'style', 'opacity', easeInQuad(i, 1, -0.75, frames)),
-                )
-        for i in range(0, frames):
-                yield (
-                        ('logo', 'style', 'opacity', easeInQuad(i, 0.25, 0.75, frames)),
-                        ('logo', 'style', 'opacity', easeInQuad(i, 0.25, 0.75, frames)),
-                        ('logo', 'style', 'opacity', easeInQuad(i, 0.25, 0.75, frames)),
-                )
-        for i in range(0, frames):
-                yield (
-                        ('logo', 'style', 'opacity', easeInQuad(i, 1, -0.75, frames)),
-                        ('logo', 'style', 'opacity', easeInQuad(i, 1, -0.75, frames)),
-                        ('logo', 'style', 'opacity', easeInQuad(i, 1, -0.75, frames)),
-                )
-        for i in range(0, frames):
-                yield (
-                        ('logo', 'style', 'opacity', easeInQuad(i, 0.25, 0.75, frames)),
-                        ('logo', 'style', 'opacity', easeInQuad(i, 0.25, 0.75, frames)),
-                        ('logo', 'style', 'opacity', easeInQuad(i, 0.25, 0.75, frames)),
-                )
-        for i in range(0, frames):
-                yield (
-                        ('logo', 'style', 'opacity', easeInQuad(i, 1, -0.75, frames)),
-                        ('logo', 'style', 'opacity', easeInQuad(i, 1, -0.75, frames)),
-                        ('logo', 'style', 'opacity', easeInQuad(i, 1, -0.75, frames)),
-                )
-        for i in range(0, frames):
-                yield (
-                        ('logo', 'style', 'opacity', easeInQuad(i, 0.25, 0.75, frames)),
-                        ('logo', 'style', 'opacity', easeInQuad(i, 0.25, 0.75, frames)),
-                        ('logo', 'style', 'opacity', easeInQuad(i, 0.25, 0.75, frames)),
-                )
-        for i in range(0, frames):
-                yield (
-                        ('logo', 'style', 'opacity', easeInQuad(i, 1, -0.75, frames)),
-                        ('logo', 'style', 'opacity', easeInQuad(i, 1, -0.75, frames)),
-                        ('logo', 'style', 'opacity', easeInQuad(i, 1, -0.75, frames)),
-                )
+  #[('sprayG%s_%s'%(g,i),  'style', 'fill', color )]
+
+
 
 def debug():
+    render('pause.svg',
+        '../pause.ts',
+        pauseFrames
+    )
+
+    '''
+    render('outro.svg',
+        '../outro.ts',
+        outroFrames
+    )
+
     render('intro.svg',
         '../intro.ts',
         introFrames,
@@ -268,11 +256,6 @@ def debug():
         }
     )
 
-    '''
-    render('outro.svg',
-        '../outro.ts',
-        outroFrames
-    )
 
     render(
         'background.svg',
@@ -280,9 +263,6 @@ def debug():
         backgroundFrames
     )
 
-    render('pause.svg',
-        '../pause.ts',
-        pauseFrames
     )
     '''
 
