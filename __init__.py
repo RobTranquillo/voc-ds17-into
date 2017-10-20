@@ -30,7 +30,6 @@ def colorSprayG(g,color):
 
 
 def introFrames(args):
-    '''
     ## flimmern und in Teilen einfügen
     frames = 12
     for i in range(0, frames):
@@ -115,7 +114,7 @@ def introFrames(args):
            ('sprayG4', 'style', 'opacity', "%.4f" % easeInOutBounce(i, 0.2, 0.9, frames)),
         ]
         yield( scene )
-    '''
+
     frames = 1*fps
     for i in range(0, frames):
         scene = [
@@ -195,7 +194,7 @@ def outroFrames(args):
           ('bysatext', 'style', 'opacity', easeInQuad(i, 0, 1, frames)),
       )
 
-  frames = 3*fps
+  frames = 5*fps
   for i in range(0, frames):
       scene = [
           ('datenspurende', 'style', 'opacity', 1),
@@ -213,6 +212,7 @@ def rndPart(group):
   groupCounts = {1: 32, 2:48, 3:28, 4: 23} #group counts
   return random.randint(1, groupCounts[group])
 
+''' Pause version by Rob
 def pauseFrames(args):
   #light color changes
   frames = int(0.5*fps)
@@ -232,6 +232,61 @@ def pauseFrames(args):
         part = rndPart(group)
         for i in range(0, frames):
           yield( [('sprayG%s_%s'%(group, part), 'style', 'fill', color )])
+'''
+
+# Pause by K4lipso: https://github.com/k4lipso/voc-ds17-into/
+def pauseFrames(args):
+    frames = 12
+    for i in range(0, frames):
+        yield (
+           ('sprayG1', 'style', 'opacity', 0),
+           ('sprayG2', 'style', 'opacity', 0),
+           ('sprayG3', 'style', 'opacity', 0),
+           ('sprayG4', 'style', 'opacity', 0),
+           ('datenspurende', 'style', 'opacity', 0),
+           ('blossKeineDS', 'style', 'opacity', 0),
+           ('title', 'style', 'opacity', 0),
+           ('subtitle', 'style', 'opacity', 0),
+           ('persons', 'style', 'opacity', 0),
+           ('id', 'style', 'opacity', 0),
+        )
+
+    frames = 1*fps
+    for i in range(0, frames):
+        yield(
+                ('sprayG1', 'style', 'opacity', 1),
+                ('sprayG2', 'style', 'opacity', 1),
+                ('sprayG4', 'style', 'opacity', 1),
+                ('sprayG3', 'style', 'opacity', 1),
+                ('datenspurende', 'style', 'opacity', 1),
+        )
+
+    objCnt = {1: 32, 2:48, 3:28, 4: 23}
+    #extend loops to get a longer lasting version
+    #one loop is about 19 seconds
+    loops = 4
+    for loop in range(0, loops):
+        frames = 2*fps
+        sprayX = random.randint(1,4)
+        sprayY = random.randint(1,4)
+        ratio = random.randint(5,10)
+        scene1 = []
+        scene1 += colorSprayG(1,"rnd")
+        scene1 += colorSprayG(2,"rnd")
+        scene1 += colorSprayG(3,"rnd")
+        scene1 += colorSprayG(4,"rnd")
+        yield(scene1)
+
+        scene2 = []
+        for i in range(0, frames):
+            scene1 = []
+            scene2 = []
+            scene1 += [('sprayG%s'%(sprayX), 'style', 'opacity', "%.4f" % easeInOutBounce(i, 0.3, 1, frames))]
+            scene2 += colorSprayG(sprayX,"rnd")
+            yield(scene1)
+            #yield scene2 multiple times to slow it a bit down
+            for i in range(0, 8):
+                yield(scene2)
 
 def debug():
     render('intro.svg',
