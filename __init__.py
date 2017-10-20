@@ -30,6 +30,7 @@ def colorSprayG(g,color):
 
 
 def introFrames(args):
+    '''
     ## flimmern und in Teilen einfügen
     frames = 12
     for i in range(0, frames):
@@ -114,7 +115,7 @@ def introFrames(args):
            ('sprayG4', 'style', 'opacity', "%.4f" % easeInOutBounce(i, 0.2, 0.9, frames)),
         ]
         yield( scene )
-
+    '''
     frames = 1*fps
     for i in range(0, frames):
         scene = [
@@ -138,15 +139,6 @@ def introFrames(args):
             ('persons', 'style', 'opacity', easeInQuad(i, 0, 1, frames)),
             ('id', 'style', 'opacity', easeInQuad(i, 0, 1, frames)),
         )
-
-'''
-    frames = 30
-    for i in range(0, frames):
-        scene = [
-        ]
-        scene += colorSprayG(,"rnd")
-        yield(scene)
-'''
 
 
 def backgroundFrames(parameters):
@@ -242,23 +234,6 @@ def pauseFrames(args):
           yield( [('sprayG%s_%s'%(group, part), 'style', 'fill', color )])
 
 def debug():
-    render('pause.svg',
-        '../pause.ts',
-        pauseFrames
-    )
-
-    '''
-    render(
-        'background.svg',
-        '../background.ts',
-        backgroundFrames
-    )
-
-    render('outro.svg',
-        '../outro.ts',
-        outroFrames
-    )
-
     render('intro.svg',
         '../intro.ts',
         introFrames,
@@ -269,7 +244,22 @@ def debug():
             '$personnames':  ['pers1','pers2','Frank Nord','Ho! Schi Ming']
         }
     )
-    '''
+
+    render('outro.svg',
+        '../outro.ts',
+        outroFrames
+    )
+
+    render('pause.svg',
+        '../pause.ts',
+        pauseFrames
+    )
+
+    render(
+        'background.svg',
+        '../background.ts',
+        backgroundFrames
+    )
 
 
 def tasks(queue, args, idlist, skiplist):
