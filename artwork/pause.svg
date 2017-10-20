@@ -26,10 +26,10 @@
      inkscape:pageopacity="0"
      inkscape:pageshadow="2"
      inkscape:zoom="0.35"
-     inkscape:cx="931.69339"
-     inkscape:cy="621.07017"
+     inkscape:cx="1163.1898"
+     inkscape:cy="549.91988"
      inkscape:document-units="px"
-     inkscape:current-layer="sprayG1"
+     inkscape:current-layer="sprayG4"
      showgrid="false"
      units="px"
      inkscape:window-width="1366"
@@ -416,7 +416,8 @@
      id="sprayLogo"
      inkscape:label="#sprayLogo"
      style="display:inline"
-     inkscape:groupmode="layer">
+     inkscape:groupmode="layer"
+     sodipodi:insensitive="true">
     <title
        id="title5857">sprayLogo</title>
     <g

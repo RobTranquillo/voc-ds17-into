@@ -150,21 +150,10 @@ def introFrames(args):
 
 
 def backgroundFrames(parameters):
-    # 40 Sekunden
-        frames = 20*fps
+        frames = 1*fps
         for i in range(0, frames):
-            xshift = (i+1) * 300/frames
-            yshift = ((i+1) * (150/frames))
             yield(
-                ('logo', 'attr', 'transform', 'translate(%.4f, %.4f)' % (xshift, yshift)),
-            )
-
-        frames = 20*fps
-        for i in range(0, frames):
-            xshift = 300 - ((i+1) * (300/frames))
-            yshift = 150 - ((i+1) * (150/frames))
-            yield(
-              ('logo', 'attr', 'transform', 'translate(%.4f, %.4f)' % (xshift, yshift)),
+              ('logo', 'style', 'opacity', 1),
             )
 
 def outroFrames(args):
@@ -228,10 +217,29 @@ def outroFrames(args):
 
 
 
+def rndPart(group):
+  groupCounts = {1: 32, 2:48, 3:28, 4: 23} #group counts
+  return random.randint(1, groupCounts[group])
+
 def pauseFrames(args):
-  #[('sprayG%s_%s'%(g,i),  'style', 'fill', color )]
+  #light color changes
+  frames = int(0.5*fps)
+  scene = []
+  groups = [1,2,3,4]
+  for cuts in range(0, 10):
+    color = rndColors()
+    for group in groups:
+      for j in range(1,6):
+        part = rndPart(group)
+        for i in range(0, frames):
+          yield([('sprayG%s_%s'%(group, part), 'style', 'fill', color )])
 
-
+    color = 'white'
+    for group in groups:
+      for j in range(1,6):
+        part = rndPart(group)
+        for i in range(0, frames):
+          yield( [('sprayG%s_%s'%(group, part), 'style', 'fill', color )])
 
 def debug():
     render('pause.svg',
@@ -240,6 +248,12 @@ def debug():
     )
 
     '''
+    render(
+        'background.svg',
+        '../background.ts',
+        backgroundFrames
+    )
+
     render('outro.svg',
         '../outro.ts',
         outroFrames
@@ -254,15 +268,6 @@ def debug():
             '$subtitle': 'Subtitel des talks',
             '$personnames':  ['pers1','pers2','Frank Nord','Ho! Schi Ming']
         }
-    )
-
-
-    render(
-        'background.svg',
-        '../background.ts',
-        backgroundFrames
-    )
-
     )
     '''
 
